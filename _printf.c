@@ -64,8 +64,8 @@ const char *handle_switch(const char *string, va_list argList, int *count)
 			print_num(va_arg(argList, int), count);
 			break;
 		case 'b':
-                        print_bin(va_arg(argList, unsigned int), count);
-                        break;
+			print_bin(va_arg(argList, unsigned int), count);
+			break;
 		case 'u':
 			print_ud(va_arg(argList, unsigned int), count);
 			break;
