@@ -63,6 +63,20 @@ const char *handle_switch(const char *string, va_list argList, int *count)
 		case 'd':
 			print_num(va_arg(argList, int), count);
 			break;
+		case 'b':
+                        print_bin(va_arg(argList, unsigned int), count);
+                        break;
+		case 'u':
+			print_ud(va_arg(argList, unsigned int), count);
+			break;
+		case 'o':
+			print_oct(va_arg(argList, unsigned int), count);
+			break;
+		case 'x':
+		case 'X':
+			print_hex(va_arg(argList, unsigned int),
+					(*string == 'X'), count);
+			break;
 		case '%':
 			print_char('%', count);
 			break;

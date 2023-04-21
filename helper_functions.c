@@ -33,4 +33,61 @@ void print_bin(unsigned int num, int *count)
 	}
 	free(binary);
 }
+/**
+ * print_ud - prints unsigned decimal
+ * @num: number to be converted
+ * @count: count variable
+ * Return: Nothing
+ */
+void print_ud(unsigned int num, int *count)
+{
+	if (num / 10 > 0)
+	{
+		print_ud((num / 10), count);
+	}
+	print_char((num % 10 + '0'), count);
+}
+/**
+ * print_oct - prints octal number
+ * @num: number to be converted
+ * @count: count variable
+ * Return: Nothing
+ */
+void print_oct(unsigned int num, int *count)
+{
+	if (num / 8 > 0)
+	{
+		print_oct((num / 8), count);
+	}
+	print_char((num % 8 + '0'), count);
+}
+/**
+ * print_hex - prints octal number
+ * @num: number to be converted
+ * @uppercase: variable to check if X is uppercase or lowercase
+ * @count: count variable
+ * Return: Nothing
+ */
+void print_hex(unsigned int num, int uppercase, int *count)
+{
+	int character;
+	char hexChar;
 
+	if (num == 0)
+	{
+		print_char('0', count);
+		return;
+	}
+	character = num % 16;
+	if (character < 10)
+	{
+		hexChar = character + '0';
+	}
+	else
+	{
+		hexChar = (uppercase ? 'A' : 'a') + (character - 10);
+	}
+	print_hex((num / 16), uppercase, count);
+	print_char(hexChar, count);
+
+}
