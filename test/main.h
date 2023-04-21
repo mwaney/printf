@@ -7,6 +7,6 @@
 
 int _putchar(char c);
 int _printf(const char *format, ...);
-void print_num(int x, int *count);
+void print_num(int x, int* count);
 
 #endif
