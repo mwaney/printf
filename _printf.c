@@ -18,48 +18,11 @@ int _printf(const char * const format, ...)
 	{
 		if (*string == '%')
 		{
-			string++;
-			switch (*string)
-			{
-				case 'c':
-					_putchar(va_arg(argList, int));
-					count++;
-					break;
-				case 'i':
-				case 'd':
-					print_num(va_arg(argList, int),
-							&count);
-					break;
-				case 's':
-					{
-						const char *s = va_arg(argList,
-								const char *);
-						if (s == NULL)
-						{
-							s = "(null)";
-						}
-						while (*s != '\0')
-						{
-							_putchar(*s);
-							count++;
-							s++;
-						}
-					break;
-					}
-				case '%':
-					_putchar('%');
-					count++;
-					break;
-				default:
-					_putchar(*string);
-					count++;
-					break;
-			}
+			string = handle_switch(string + 1, argList, &count);
 		}
 		else
 		{
-			_putchar(*string);
-			count++;
+			print_char(*string, &count);
 		}
 
 		string++;
@@ -68,12 +31,73 @@ int _printf(const char * const format, ...)
 	va_end(argList);
 	return (count);
 }
+/**
+ * print_char - a function that prints a character
+ * @c: a character
+ * @count: a variable to keep count
+ * Return: Nothing
+ */
+void print_char(char c, int *count)
+{
+	_putchar(c);
+	(*count)++;
+}
+/**
+ * handle_switch - a function that contains the switch statement
+ * @string: a character array
+ * @argList: list of arguments
+ * @count: a variable to keep count
+ * Return: Nothing
+ */
+const char *handle_switch(const char *string, va_list argList, int *count)
+{
+	switch (*string)
+	{
+		case 'c':
+			print_char(va_arg(argList, int), count);
+			break;
+		case 's':
+			print_str(va_arg(argList, const char *), count);
+			break;
+		case 'i':
+		case 'd':
+			print_num(va_arg(argList, int), count);
+			break;
+		case '%':
+			print_char('%', count);
+			break;
+		default:
+			print_char('%', count);
+			print_char(*string, count);
+			break;
+	}
+	return (string);
+}
+/**
+ * print_str- a function that prints a string
+ * @s: a character array
+ * @count: a variable to keep count
+ * Return: Nothing
+ */
+void print_str(const char *s, int *count)
+{
+	if (!s)
+	{
+		s = "(null)";
+	}
 
+	while (*s != '\0')
+	{
+		_putchar(*s);
+		(*count)++;
+		s++;
+	}
+}
 /**
  * print_num - a function that produces output according to a format
  * @count: counter
  * @x: integer
- * Return: number of characters printed
+ * Return: Nothing
  */
 void print_num(int x, int *count)
 {
