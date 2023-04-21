@@ -75,7 +75,6 @@ void print_hex(unsigned int num, int uppercase, int *count)
 
 	if (num == 0)
 	{
-		print_char('0', count);
 		return;
 	}
 	character = num % 16;
