@@ -1,5 +1,6 @@
 #include "main.h"
-
+#include <unstd.h>
+#define BUFFFER_SIZE 1024
 /**
  * _printf - a function that produces output according to a format
  * @format: a character string
@@ -11,6 +12,8 @@ int _printf(const char * const format, ...)
 	va_list argList;
 	const char *string = format;
 	int count = 0;
+	char buffer[1024];
+	int buf_index = 0;
 
 	va_start(argList, format);
 
@@ -18,114 +21,85 @@ int _printf(const char * const format, ...)
 	{
 		if (*string == '%')
 		{
-			string = handle_switch(string + 1, argList, &count);
+			string = handle_switch(string + 1, argList,
+					&count, &buf_index);
 		}
 		else
 		{
-			print_char(*string, &count);
+			if (buf_index == BUFF_SIZE)
+			{
+				write(1, buffer, buf_index);
+				buf_index = 0;
+			}
+			print_char_to_buffer(buffer, &buf_index, *string);
+			count++;
 		}
 
 		string++;
+	}
+	if (buf_index > 0)
+	{
+		write(1, buffer, buf_index);
 	}
 
 	va_end(argList);
 	return (count);
 }
 /**
- * print_char - a function that prints a character
- * @c: a character
- * @count: a variable to keep count
- * Return: Nothing
- */
-void print_char(char c, int *count)
-{
-	_putchar(c);
-	(*count)++;
-}
-/**
  * handle_switch - a function that contains the switch statement
  * @string: a character array
  * @argList: list of arguments
  * @count: a variable to keep count
- * Return: Nothing
+ * @buffer: pointer to buffer
+ * @buf_index: index of the buffer
+ * Return: character pointer
  */
-const char *handle_switch(const char *string, va_list argList, int *count)
+const char *handle_switch(const char *string, va_list argList,
+		int *count, char *buffer, int *buf_index)
 {
 	switch (*string)
 	{
 		case 'c':
-			print_char(va_arg(argList, int), count);
+			print_char_to_buffer(buffer, buf_index, va_arg(argList, int));
 			break;
 		case 's':
-			print_str(va_arg(argList, const char *), count);
+			print_str_to_buffer(buffer, buf_index,
+					va_arg(argList, const char *));
 			break;
 		case 'i':
 		case 'd':
-			print_num(va_arg(argList, int), count);
+			print_num_to_buffer(buffer, buf_index,
+					va_arg(argList, int));
 			break;
 		case 'b':
-			print_bin(va_arg(argList, unsigned int), count);
+			print_bin_to_buffer(buffer, buf_index,
+					va_arg(argList, unsigned int));
 			break;
 		case 'u':
-			print_ud(va_arg(argList, unsigned int), count);
+			print_ud_to_buffer(buffer, buf_index,
+					va_arg(argList, unsigned int));
 			break;
 		case 'o':
-			print_oct(va_arg(argList, unsigned int), count);
+			print_oct_to_buffer(buffer, buf_index,
+					va_arg(argList, unsigned int));
 			break;
 		case 'x':
 		case 'X':
-			print_hex(va_arg(argList, unsigned int),
-					(*string == 'X'), count);
+			print_hex_to_buffer(buffer, buf_index,
+					va_arg(argList, unsigned int), (*string == 'X'));
+
 			break;
 		case '%':
-			print_char('%', count);
+			print_percent_to_buffer(buffer, buf_index);
 			break;
 		default:
-			print_char('%', count);
-			print_char(*string, count);
+			print_char_to_buffer(buffer, buf_index, '%');
+			print_char_to_buffer(buffer, buf_index, *string);
+
 			break;
 	}
+
+	if (*buf_index == BUFFER_SIZE - 1)
+		print_buffer(buffer, buf_index, count);
 	return (string);
 }
-/**
- * print_str- a function that prints a string
- * @s: a character array
- * @count: a variable to keep count
- * Return: Nothing
- */
-void print_str(const char *s, int *count)
-{
-	if (!s)
-	{
-		s = "(null)";
-	}
-
-	while (*s != '\0')
-	{
-		_putchar(*s);
-		(*count)++;
-		s++;
-	}
-}
-/**
- * print_num - a function that produces output according to a format
- * @count: counter
- * @x: integer
- * Return: Nothing
- */
-void print_num(int x, int *count)
-{
-	if (x < 0)
-	{
-		_putchar('-');
-		x = -x;
-		(*count)++;
-	}
-	if (x >= 10)
-	{
-		print_num(x / 10, count);
-	}
-	_putchar(x % 10 + '0');
-	(*count)++;
-}
-
