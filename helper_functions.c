@@ -64,5 +64,3 @@ void print_percent_to_buffer(char *buffer, int *bufferIndex)
 {
 	buffer[(*bufferIndex)++] = '%';
 }
-~
-

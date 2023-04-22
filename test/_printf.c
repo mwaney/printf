@@ -1,6 +1,6 @@
 #include "main.h"
-#include <unistd.h>
-#define BUFFER_SIZE 1024
+#include <unstd.h>
+#define BUFFFER_SIZE 1024
 /**
  * _printf - a function that produces output according to a format
  * @format: a character string
@@ -22,11 +22,11 @@ int _printf(const char * const format, ...)
 		if (*string == '%')
 		{
 			string = handle_switch(string + 1, argList,
-					&count, buffer, &buf_index);
+					&count, &buf_index);
 		}
 		else
 		{
-			if (buf_index == BUFFER_SIZE)
+			if (buf_index == BUFF_SIZE)
 			{
 				write(1, buffer, buf_index);
 				buf_index = 0;
