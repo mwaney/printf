@@ -1,5 +1,6 @@
 #ifndef MAIN_H
 #define MAIN_H
+#include <unistd.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <stdarg.h>
@@ -20,4 +21,8 @@ void print_hex_to_buffer(char *buffer, int *bufferIndex,
 		unsigned int num, int uppercase);
 void print_percent_to_buffer(char *buffer, int *bufferIndex);
 void print_custom_str(char *buffer, int *buf_index, const char *str);
+void handle_integer(char spec, va_list argList,
+		char *buffer, int *buf_index);
+void handle_switch_case(char spec, va_list argList,
+		char *buffer, int *buf_index);
 #endif

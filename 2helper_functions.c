@@ -10,8 +10,7 @@
 void print_buffer(char *buffer, int *bufferIndex, int *count)
 {
 	buffer[*bufferIndex] = '\0';
-	printf("%s", buffer);
-
+	write(STDOUT_FILENO, buffer, *bufferIndex);
 	*bufferIndex = 0;
 	(*count)++;
 }
