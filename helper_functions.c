@@ -94,6 +94,8 @@ int handle_format_specifier(const char *format, va_list args,
 		case 'X':
 			*buffer_index = print_hex_uppercase(args, buffer, *buffer_index, buff_size);
 			break;
+		case 'S':
+			*buffer_index = handle_S(args, buffer, *buffer_index, buff_size);
 		default:
 			break;
 	}

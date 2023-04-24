@@ -27,5 +27,6 @@ int print_hex_lowercase(va_list args, char *buffer,
 		int buffer_index, int buff_size);
 int print_hex_uppercase(va_list args, char *buffer,
 		int buffer_index, int buff_size);
+int handle_S(va_list args, char *buffer, int buffer_index, int buff_size);
 
 #endif
