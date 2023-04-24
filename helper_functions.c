@@ -68,11 +68,9 @@ int handle_format_specifier(const char *format, va_list args,
 		case 'c':
 			*buffer_index = print_char(args, buffer, *buffer_index);
 			break;
-
 		case 's':
 			*buffer_index = print_string(args, buffer, *buffer_index, buff_size);
 			break;
-
 		case '%':
 			buffer[(*buffer_index)++] = '%';
 			break;
@@ -83,15 +81,24 @@ int handle_format_specifier(const char *format, va_list args,
 		case 'b':
 			*buffer_index = print_binary(args, buffer, *buffer_index, buff_size);
 			break;
+		case 'u':
+			*buffer_index = print_ud(args, buffer, *buffer_index, buff_size, 10, 0);
+			break;
+		case 'o':
+			*buffer_index = print_octal(args, buffer, *buffer_index, buff_size);
+			break;
+		case 'x':
+			*buffer_index = print_hex(args, buffer, *buffer_index, buff_size);
+			break;
+
+		case 'X':
+			*buffer_index = print_hex_uppercase(args, buffer, *buffer_index, buff_size);
+			break;
 		default:
 			break;
 	}
-
 	if (*buffer_index >= BUFFER_SIZE)
-	{
 		write_buffer(buffer, BUFFER_SIZE, chars_printed, buffer_index);
-	}
-
 	return (2);
 }
 
