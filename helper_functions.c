@@ -82,13 +82,13 @@ int handle_format_specifier(const char *format, va_list args,
 			*buffer_index = print_binary(args, buffer, *buffer_index, buff_size);
 			break;
 		case 'u':
-			*buffer_index = print_ud(args, buffer, *buffer_index, buff_size, 10, 0);
+			*buffer_index = print_decimal(args, buffer, *buffer_index, buff_size);
 			break;
 		case 'o':
 			*buffer_index = print_octal(args, buffer, *buffer_index, buff_size);
 			break;
 		case 'x':
-			*buffer_index = print_hex(args, buffer, *buffer_index, buff_size);
+			*buffer_index = print_hex_lowercase(args, buffer, *buffer_index, buff_size);
 			break;
 
 		case 'X':

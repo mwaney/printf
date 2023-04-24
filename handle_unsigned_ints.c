@@ -1,16 +1,97 @@
 #include "main.h"
+
 /**
- * print_ud - prints an unsigned integer
+ * print_decimal - prints an unsigned decimal integer
  * @args: va_list of arguments
  * @buffer: buffer to store output
  * @buffer_index: current index in buffer
  * @buff_size: size of buffer
- * @base: base to use for conversion
- * @uppercase: whether to use uppercase for x/X
  * Return: updated index in buffer
  */
-int print_ud(va_list args, char *buffer, int buffer_index,
-		int buff_size, unsigned int base, int uppercase)
+int print_decimal(va_list args, char *buffer, int buffer_index, int buff_size)
+{
+	unsigned int num = va_arg(args, unsigned int);
+	char num_buffer[12];
+	int num_index = 0;
+	int i;
+	int chars_printed = 0;
+
+	if (num == 0)
+	{
+		buffer[buffer_index++] = '0';
+	}
+	else
+	{
+		while (num != 0)
+		{
+			num_buffer[num_index++] = (num % 10) + '0';
+			num /= 10;
+		}
+
+		for (i = num_index - 1; i >= 0; i--)
+		{
+			buffer[buffer_index++] = num_buffer[i];
+			if (buffer_index >= buff_size)
+			{
+				write_buffer(buffer, buff_size, &chars_printed, &buffer_index);
+			}
+		}
+	}
+
+	return (buffer_index);
+}
+/**
+ * print_octal - prints an unsigned integer in octal format
+ * @args: va_list of arguments
+ * @buffer: buffer to store output
+ * @buffer_index: current index in buffer
+ * @buff_size: size of buffer
+ * Return: updated index in buffer
+ */
+int print_octal(va_list args, char *buffer, int buffer_index, int buff_size)
+{
+	unsigned int num = va_arg(args, unsigned int);
+	char num_buffer[12];
+	int num_index = 0;
+	int i;
+	int chars_printed = 0;
+
+	if (num == 0)
+	{
+		buffer[buffer_index++] = '0';
+	}
+	else
+	{
+		while (num != 0)
+		{
+			num_buffer[num_index++] = (num % 8) + '0';
+			num /= 8;
+		}
+
+		for (i = num_index - 1; i >= 0; i--)
+		{
+			buffer[buffer_index++] = num_buffer[i];
+			if (buffer_index >= buff_size)
+			{
+				write_buffer(buffer, buff_size, &chars_printed, &buffer_index);
+			}
+		}
+	}
+
+	return (buffer_index);
+}
+/**
+ * print_hex - prints an unsigned integer in lowercase or uppercase
+ *             hexadecimal format
+ * @args: va_list of arguments
+ * @buffer: buffer to store output
+ * @buffer_index: current index in buffer
+ * @buff_size: size of buffer
+ * @uppercase: 1 to use uppercase letters, 0 for lowercase
+ * Return: updated index in buffer
+ */
+int print_hex(va_list args, char *buffer, int buffer_index,
+		int buff_size, int uppercase)
 {
 	unsigned int num = va_arg(args, unsigned int);
 	char digits[] = "0123456789abcdef";
@@ -21,8 +102,8 @@ int print_ud(va_list args, char *buffer, int buffer_index,
 
 	while (num != 0)
 	{
-		num_buffer[num_index++] = digits[num % base];
-		num /= base;
+		num_buffer[num_index++] = digits[num % 16];
+		num /= 16;
 	}
 
 	if (uppercase)
@@ -46,31 +127,18 @@ int print_ud(va_list args, char *buffer, int buffer_index,
 }
 
 /**
- * print_octal - prints an unsigned integer in octal format
+ * print_hex_lowercase - prints an unsigned integer
+ * in lowercase hexadecimal format
  * @args: va_list of arguments
  * @buffer: buffer to store output
  * @buffer_index: current index in buffer
  * @buff_size: size of buffer
  * Return: updated index in buffer
  */
-int print_octal(va_list args, char *buffer, int buffer_index,
+int print_hex_lowercase(va_list args, char *buffer, int buffer_index,
 		int buff_size)
 {
-	return (print_ud(args, buffer, buffer_index, buff_size, 8, 0));
-}
-
-/**
- * print_hex - prints an unsigned integer in lowercase hexadecimal format
- * @args: va_list of arguments
- * @buffer: buffer to store output
- * @buffer_index: current index in buffer
- * @buff_size: size of buffer
- * Return: updated index in buffer
- */
-int print_hex(va_list args, char *buffer, int buffer_index,
-		int buff_size)
-{
-	return (print_ud(args, buffer, buffer_index, buff_size, 16, 0));
+	return (print_hex(args, buffer, buffer_index, buff_size, 0));
 }
 
 /**
@@ -85,6 +153,11 @@ int print_hex(va_list args, char *buffer, int buffer_index,
 int print_hex_uppercase(va_list args, char *buffer, int buffer_index,
 		int buff_size)
 {
-	return (print_ud(args, buffer, buffer_index, buff_size, 16, 1));
+	return (print_hex(args, buffer, buffer_index, buff_size, 1));
 }
+
+
+
+
+
 

@@ -19,10 +19,13 @@ void print_buffered_string(const char *format, va_list args,
 		int *chars_printed);
 int print_integer(va_list args, char *buffer, int buffer_index, int buff_size);
 int print_binary(va_list args, char *buffer, int buffer_index, int buff_size);
-int print_ud(va_list args, char *buffer, int buffer_index,
-		int buff_size, unsigned int base, int uppercase);
+int print_decimal(va_list args, char *buffer, int buffer_index, int buff_size);
 int print_octal(va_list args, char *buffer, int buffer_index, int buff_size);
-int print_hex(va_list args, char *buffer, int buffer_index, int buff_size);
+int print_hex(va_list args, char *buffer,
+		int buffer_index, int buff_size, int uppercase);
+int print_hex_lowercase(va_list args, char *buffer,
+		int buffer_index, int buff_size);
 int print_hex_uppercase(va_list args, char *buffer,
 		int buffer_index, int buff_size);
+
 #endif
