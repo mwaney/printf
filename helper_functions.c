@@ -99,12 +99,10 @@ int handle_format_specifier(const char *format, va_list args, char *buffer,
 			*buffer_index = print_pointer(args, buffer, *buffer_index, buff_size);
 			break;
 		default:
-			break;
-	}
+			break;	}
 	if (*buffer_index >= BUFFER_SIZE)
 		write_buffer(buffer, BUFFER_SIZE, chars_printed, buffer_index);
-	return (2);
-}
+	return (2);	}
 
 /**
  * print_buffered_string - prints a string that may be larger than the buffer
