@@ -2,6 +2,7 @@
 #define MAIN_H
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #define BUFFER_SIZE 1024
@@ -17,4 +18,6 @@ void print_buffered_string(const char *format, va_list args,
 		char *buffer, int *buffer_index, int buff_size,
 		int *chars_printed);
 int print_integer(va_list args, char *buffer, int buffer_index, int buff_size);
+void print_binary_recursion(unsigned int num, char *binary_str, int index);
+int print_binary(va_list args, char *buffer, int buffer_index, int buff_size);
 #endif

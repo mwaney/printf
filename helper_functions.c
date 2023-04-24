@@ -80,6 +80,9 @@ int handle_format_specifier(const char *format, va_list args,
 		case 'i':
 			*buffer_index = print_integer(args, buffer, *buffer_index, buff_size);
 			break;
+		case 'b':
+			*buffer_index = print_binary(args, buffer, *buffer_index, buff_size);
+			break;
 		default:
 			break;
 	}
