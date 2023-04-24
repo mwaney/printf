@@ -59,9 +59,8 @@ void write_buffer(char *buffer, int buffer_size,
  * @chars_printed: pointer to the total number of characters printed
  * Return: updated index in buffer
  */
-int handle_format_specifier(const char *format, va_list args,
-		char *buffer, int *buffer_index, int buff_size,
-		int *chars_printed)
+int handle_format_specifier(const char *format, va_list args, char *buffer,
+		int *buffer_index, int buff_size, int *chars_printed)
 {
 	switch (format[1])
 	{
@@ -90,12 +89,15 @@ int handle_format_specifier(const char *format, va_list args,
 		case 'x':
 			*buffer_index = print_hex_lowercase(args, buffer, *buffer_index, buff_size);
 			break;
-
 		case 'X':
 			*buffer_index = print_hex_uppercase(args, buffer, *buffer_index, buff_size);
 			break;
 		case 'S':
 			*buffer_index = handle_S(args, buffer, *buffer_index, buff_size);
+			break;
+		case 'p':
+			*buffer_index = print_pointer(args, buffer, *buffer_index, buff_size);
+			break;
 		default:
 			break;
 	}
