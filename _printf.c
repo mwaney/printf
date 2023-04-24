@@ -1,63 +1,36 @@
 #include "main.h"
-#define BUFFER_SIZE 1024
 
 /**
- * _printf - formatted output conversion and print data.
- * @format: input string.
- * Return: number of chars printed.
+ * _printf - prints formatted output to stdout
+ * @format: format string
+ * Return: number of characters printed
  */
 int _printf(const char *format, ...)
 {
 	va_list args;
-
-	char buffer[BUFFER_SIZE], c;
-	int buffer_index = 0, len;
-	int format_index = 0;
-	int chars_printed = 0;
-	char *s;
+	int buffer_index = 0, chars_printed = 0;
+	char buffer[BUFFER_SIZE];
 
 	va_start(args, format);
 
-	while (format[format_index] != '\0')
+	while (*format != '\0')
 	{
-		if (format[format_index] == '%')
+		if (*format == '%')
 		{
-			format_index++;
-			switch (format[format_index])
-			{
-				case 'c':
-					c = va_arg(args, int);
-					buffer[buffer_index++] = c;
-					break;
-				case 's':
-					s = va_arg(args, char *);
-					len = snprintf(buffer + buffer_index,
-							BUFFER_SIZE - buffer_index, "%s", s);
-					buffer_index += len;
-					break;
-				case '%':
-					buffer[buffer_index++] = '%';
-					break;
-			}
+			format += handle_format_specifier(format, args, buffer,
+					&buffer_index, BUFFER_SIZE, &chars_printed);
 		}
 		else
 		{
-			buffer[buffer_index++] = format[format_index];
-		}
-
-		format_index++;
-
-		if (buffer_index >= BUFFER_SIZE)
-		{
-			chars_printed += write(1, buffer, buffer_index);
-			buffer_index = 0;
+			buffer[buffer_index++] = *format++;
+			if (buffer_index >= BUFFER_SIZE)
+			{
+				write_buffer(buffer, BUFFER_SIZE, &chars_printed, &buffer_index);
+			}
 		}
 	}
 
-	if (buffer_index > 0)
-	{
-		chars_printed += write(1, buffer, buffer_index);
-	}
+	write_buffer(buffer, BUFFER_SIZE, &chars_printed, &buffer_index);
 
 	va_end(args);
 
