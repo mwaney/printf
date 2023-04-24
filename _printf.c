@@ -1,83 +1,65 @@
 #include "main.h"
-#include <unistd.h>
 #define BUFFER_SIZE 1024
+
 /**
- * _printf - a function that produces output according to a format
- * @format: a character string
- * Return: number of characters printed
+ * _printf - formatted output conversion and print data.
+ * @format: input string.
+ * Return: number of chars printed.
  */
-
-int _printf(const char * const format, ...)
+int _printf(const char *format, ...)
 {
-	va_list argList;
-	const char *string = format;
-	char buffer[1024];
-	int count = 0, buf_index = 0;
+	va_list args;
 
-	va_start(argList, format);
-	while (*string != '\0')
+	char buffer[BUFFER_SIZE], c;
+	int buffer_index = 0, len;
+	int format_index = 0;
+	int chars_printed = 0;
+	char *s;
+
+	va_start(args, format);
+
+	while (format[format_index] != '\0')
 	{
-		if (*string == '%')
+		if (format[format_index] == '%')
 		{
-			if (*(string + 1) == '%')
+			format_index++;
+			switch (format[format_index])
 			{
-				print_char_to_buffer(buffer, &buf_index, '%');
-				string += 2;
-				count++;
-				continue;
-			}
-			else
-			{
-				string = handle_switch(string + 1, argList,
-						&count, buffer, &buf_index);
+				case 'c':
+					c = va_arg(args, int);
+					buffer[buffer_index++] = c;
+					break;
+				case 's':
+					s = va_arg(args, char *);
+					len = snprintf(buffer + buffer_index,
+							BUFFER_SIZE - buffer_index, "%s", s);
+					buffer_index += len;
+					break;
+				case '%':
+					buffer[buffer_index++] = '%';
+					break;
 			}
 		}
 		else
 		{
-			if (buf_index == BUFFER_SIZE)
-			{
-				write(1, buffer, buf_index);
-				buf_index = 0;
-			}
-			print_char_to_buffer(buffer, &buf_index, *string);
-			count++;
+			buffer[buffer_index++] = format[format_index];
 		}
-		string++;
-	}
-	if (buf_index > 0)
-		write(1, buffer, buf_index);
-	va_end(argList);
-	return (count);
-}
 
-/**
- * handle_switch - a function that contains the switch statement
- * @string: a character array
- * @argList: list of arguments
- * @count: a variable to keep count
- * @buffer: pointer to buffer
- * @buf_index: index of the buffer
- * Return: character pointer
- */
-const char *handle_switch(const char *string, va_list argList, int *count,
-		char *buffer, int *buf_index) {
-	switch (*string)
+		format_index++;
+
+		if (buffer_index >= BUFFER_SIZE)
+		{
+			chars_printed += write(1, buffer, buffer_index);
+			buffer_index = 0;
+		}
+	}
+
+	if (buffer_index > 0)
 	{
-		case 'i':
-		case 'd':
-		case 'b':
-		case 'u':
-		case 'o':
-		case 'x':
-		case 'X':
-			handle_integer(*string, argList, buffer, buf_index);
-			break;
-		default:
-			handle_switch_case(*string, argList, buffer, buf_index);
-			break;
+		chars_printed += write(1, buffer, buffer_index);
 	}
 
-	if (*buf_index == BUFFER_SIZE - 1)
-		print_buffer(buffer, buf_index, count);
-	return (string);
+	va_end(args);
+
+	return (chars_printed);
 }
