@@ -76,7 +76,10 @@ int handle_format_specifier(const char *format, va_list args,
 		case '%':
 			buffer[(*buffer_index)++] = '%';
 			break;
-
+		case 'd':
+		case 'i':
+			*buffer_index = print_integer(args, buffer, *buffer_index, buff_size);
+			break;
 		default:
 			break;
 	}

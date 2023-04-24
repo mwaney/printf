@@ -16,4 +16,5 @@ int handle_format_specifier(const char *format, va_list args,
 void print_buffered_string(const char *format, va_list args,
 		char *buffer, int *buffer_index, int buff_size,
 		int *chars_printed);
+int print_integer(va_list args, char *buffer, int buffer_index, int buff_size);
 #endif
