@@ -1,38 +1,62 @@
 #include "main.h"
 
+void output_buf(char buffer[], int *buff_ind);
+
 /**
- * _printf - prints formatted output to stdout
- * @format: format string
- * Return: number of characters printed
+ * _printf - a function that produces output according to a format.
+ * @format:character string.
+ *
+ *
+ * Return:the number of characters printed
  */
+
 int _printf(const char *format, ...)
 {
+	int  buff_ind = 0, c = 0, counter = 0, i = 0;
+	int size, flags, width, precision;
+
+
 	va_list args;
-	int buffer_index = 0, chars_printed = 0;
 	char buffer[BUFFER_SIZE];
+
+	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
+		return -1;
+
 
 	va_start(args, format);
 
-	while (*format != '\0')
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
-		if (*format == '%')
+		if (format[i] != '%')
 		{
-			format += handle_format_specifier(format, args, buffer,
-					&buffer_index, BUFFER_SIZE, &chars_printed);
+			buffer[buff_ind++] = format[i];
+			if (buff_ind == BUFFER_SIZE)
+			{
+				output_buf(buffer, &buff_ind);
+			}
+			c++;
 		}
 		else
 		{
-			buffer[buffer_index++] = *format++;
-			if (buffer_index >= BUFFER_SIZE)
+			output_buf(buffer, &buff_ind);
+			flags = flagged(format, &i);
+			width = wide(format, &i, args);
+			++i;
+			precision = print_precision(format, &i, args);
+			size = sizef(format, &i);
+
+			counter = handle_format_spec(format, &i, args, buffer,
+					flags, width, precision, size);
+
+			if (counter == -1)
 			{
-				write_buffer(buffer, BUFFER_SIZE, &chars_printed, &buffer_index);
+				return (-1);
 			}
+			c += counter;
 		}
 	}
-
-	write_buffer(buffer, BUFFER_SIZE, &chars_printed, &buffer_index);
-
+	output_buf(buffer, &buff_ind);
 	va_end(args);
 
-	return (chars_printed);
+	return (c);
 }

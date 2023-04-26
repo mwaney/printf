@@ -6,40 +6,62 @@
  * @buffer: buffer to store output
  * @buffer_index: current index in buffer
  * @buff_size: size of buffer
+ * @flag: flag character to handle
  * Return: updated index in buffer
  */
-int print_decimal(va_list args, char *buffer, int buffer_index, int buff_size)
+int print_decimal(va_list args, char *buffer, int buffer_index, int buff_size, char *flags)
 {
-	unsigned int num = va_arg(args, unsigned int);
-	char num_buffer[12];
-	int num_index = 0;
-	int i;
-	int chars_printed = 0;
+    unsigned int num = va_arg(args, unsigned int);
+    char num_buffer[12];
+    int num_index = 0;
+    int i;
+    int chars_printed = 0;
+    int has_sign = 0;
 
-	if (num == 0)
-	{
-		buffer[buffer_index++] = '0';
-	}
-	else
-	{
-		while (num != 0)
-		{
-			num_buffer[num_index++] = (num % 10) + '0';
-			num /= 10;
-		}
+    if (strcmp(flags, "+") == 0)
+    {
+        has_sign = 1;
+    }
+    else if (strcmp(flags, " ") == 0)
+    {
+        has_sign = 2;
+    }
 
-		for (i = num_index - 1; i >= 0; i--)
-		{
-			buffer[buffer_index++] = num_buffer[i];
-			if (buffer_index >= buff_size)
-			{
-				write_buffer(buffer, buff_size, &chars_printed, &buffer_index);
-			}
-		}
-	}
+    if (num == 0)
+    {
+        buffer[buffer_index++] = '0';
+        if (has_sign)
+        {
+            buffer[buffer_index++] = (has_sign == 1) ? '+' : ' ';
+        }
+    }
+    else
+    {
+        while (num != 0)
+        {
+            num_buffer[num_index++] = (num % 10) + '0';
+            num /= 10;
+        }
 
-	return (buffer_index);
+        if (has_sign)
+        {
+            buffer[buffer_index++] = (has_sign == 1) ? '+' : ' ';
+        }
+
+        for (i = num_index - 1; i >= 0; i--)
+        {
+            buffer[buffer_index++] = num_buffer[i];
+            if (buffer_index >= buff_size)
+            {
+                write_buffer(buffer, buff_size, &chars_printed, &buffer_index);
+            }
+        }
+    }
+
+    return buffer_index;
 }
+
+
 /**
  * print_octal - prints an unsigned integer in octal format
  * @args: va_list of arguments

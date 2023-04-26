@@ -62,6 +62,7 @@ void write_buffer(char *buffer, int buffer_size,
 int handle_format_specifier(const char *format, va_list args, char *buffer,
 		int *buffer_index, int buff_size, int *chars_printed)
 {
+	char *flags;
 	switch (format[1])
 	{
 		case 'c':
@@ -73,15 +74,16 @@ int handle_format_specifier(const char *format, va_list args, char *buffer,
 		case '%':
 			buffer[(*buffer_index)++] = '%';
 			break;
-		case 'd':
-		case 'i':
-			*buffer_index = print_integer(args, buffer, *buffer_index, buff_size);
-			break;
+			/**	case 'd':
+			  case 'i':
+			 *buffer_index = print_integer(args, buffer, *buffer_index, buff_size);
+			 break;*/
 		case 'b':
 			*buffer_index = print_binary(args, buffer, *buffer_index, buff_size);
 			break;
 		case 'u':
-			*buffer_index = print_decimal(args, buffer, *buffer_index, buff_size);
+			flags = parse_flags(format);
+			*buffer_index = print_decimal(args, buffer, *buffer_index, buff_size, flags);
 			break;
 		case 'o':
 			*buffer_index = print_octal(args, buffer, *buffer_index, buff_size);
@@ -99,10 +101,12 @@ int handle_format_specifier(const char *format, va_list args, char *buffer,
 			*buffer_index = print_pointer(args, buffer, *buffer_index, buff_size);
 			break;
 		default:
-			break;	}
+			break;
+	}
 	if (*buffer_index >= BUFFER_SIZE)
 		write_buffer(buffer, BUFFER_SIZE, chars_printed, buffer_index);
-	return (2);	}
+	return (2);
+}
 
 /**
  * print_buffered_string - prints a string that may be larger than the buffer

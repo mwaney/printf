@@ -8,14 +8,19 @@
  * @buff_size: size of buffer
  * Return: updated index in buffer
  */
-int print_integer(va_list args, char *buffer, int buffer_index, int buff_size)
+int print_integer(va_list args, char *buffer, int buffer_index, int buff_size, int plus_flag, int space_flag)
 {
-	int num = va_arg(args, int);
-	int len = snprintf(buffer + buffer_index,
-			buff_size - buffer_index, "%d", num);
-	buffer_index += len;
+    int num = va_arg(args, int);
+    int len;
+    if (num >= 0 && plus_flag)
+        len = snprintf(buffer + buffer_index, buff_size - buffer_index, "+%d", num);
+    else if (num >= 0 && space_flag)
+        len = snprintf(buffer + buffer_index, buff_size - buffer_index, " %d", num);
+    else
+        len = snprintf(buffer + buffer_index, buff_size - buffer_index, "%d", num);
+    buffer_index += len;
 
-	return (buffer_index);
+    return buffer_index;
 }
 /**
  * print_binary - prints an integer in binary
