@@ -1,5 +1,3 @@
-
-
 #include "main.h"
 
 /**
@@ -24,6 +22,7 @@ int flagged(const char *format, int *i)
 	while (format[curr_i] != '\0')
 	{
 		int j = 0;
+
 		while (FLAGS_CH[j] != '\0')
 		{
 			if (format[curr_i] == FLAGS_CH[j])

@@ -28,7 +28,7 @@ int print_ptr(va_list args, char buffer[],
 
 
 	pref = BUFFER_SIZE - 2;
-	len =2;
+	len = 2;
 
 	if (addrs == NULL)
 		return (write(1, "(nil)", 5));

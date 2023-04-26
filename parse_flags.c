@@ -1,7 +1,15 @@
 #include "main.h"
-char *parse_flags(const char* format)
+
+/**
+  * parse_flags- a function to handle flags
+  * @format: pointer
+  * Return: integer
+  */
+
+char *parse_flags(const char *format)
 {
-	char* flags = "";
+	char *flags = "";
+
 	if (format[2] == '+')
 	{
 		flags = "+";
@@ -17,5 +25,5 @@ char *parse_flags(const char* format)
 		flags = "#";
 		format++;
 	}
-	return flags;
+	return (flags);
 }
