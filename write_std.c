@@ -79,7 +79,6 @@ int writ_hex(va_list args, char hard_code_var[], char char_buff[],
  * @mod_pres: mod_pres of the field
  * @ind: the starting index of the number in the char_buff
  * @char_buff: the char_buff to write the number to
-
  * @size: size of the field
  *
  * Return: the number of characters written to the char_buff
@@ -100,9 +99,8 @@ int write_number(int neg, int ind, char char_buff[],
 
 /**
  * write_num - formats and writes a numerical value to standard output
- * @ind: index of the buffer where to start writing\
+ * @ind: index of the buffer where to start writing
  * @char_buff: character buffer where to write the numerical value
- *
  * @flags: integer representing the format flags
  * @mod_width: integer representing the width modifier
  * @prec: integer representing the precision modifier
