@@ -20,34 +20,23 @@ int handle_format_spec(const char *format_spec, int *ind,
 		va_list list, char buffer[],
 		int flags, int width, int precision, int size)
 {
-	int i, unknown_len = 0, printed_chars = -1;
+	int i = 0, unknown_len = 0, printed_chars = -1;
 	fm_struct conv_spec[] = {
-		{'c', print_c},
-		{'s', print_str},
-		{'%', print_perc},
-		{'i', print_int},
-		{'d', print_int},
-		{'b', print_bin},
-		{'u', print_unsalid},
-		{'o', print_oct},
-		{'x', print_hex},
-		{'X', print_up_hex},
-		{'p', print_ptr},
-		{'S', writ_S},
-		{'r', conv_rev},
-		{'R', conv_rot13},
+		{'c', print_c}, {'s', print_str}, {'%', print_perc},
+		{'i', print_int}, {'d', print_int}, {'b', print_bin},
+		{'u', print_unsalid}, {'o', print_oct}, {'x', print_hex},
+		{'X', print_up_hex}, {'p', print_ptr},
+		{'S', writ_S}, {'r', conv_rev}, {'R', conv_rot13},
 		{'\0', NULL}
 	};
-	i = 0;
 	while (conv_spec[i].format_spec != '\0')
 	{
 		if (format_spec[*ind] == conv_spec[i].format_spec)
 		{
-			return (conv_spec[i].fn(list, buffer, flags, width, precision, size));
+			return (conv_spec[i].fn(list, buffer, flags,
+						width, precision, size));
 		}
-		i++;
-	}
-
+		i++;	}
 	if (conv_spec[i].format_spec == '\0')
 	{
 		if (format_spec[*ind] == '\0')
@@ -58,7 +47,8 @@ int handle_format_spec(const char *format_spec, int *ind,
 		else if (width)
 		{
 			(*ind)--;
-			while (*ind >= 0 && (format_spec[*ind] != ' ' && format_spec[*ind] != '%'))
+			while (*ind >= 0 && (format_spec[*ind] != ' ' &&
+						format_spec[*ind] != '%'))
 			{
 				(*ind)--;
 			}
@@ -66,12 +56,9 @@ int handle_format_spec(const char *format_spec, int *ind,
 			{
 				(*ind)--;
 			}
-			return (1);
-		}
+			return (1);	}
 		unknown_len += write(1, &format_spec[*ind], 1);
-		return (unknown_len);
-	}
-
+		return (unknown_len);	}
 	return (printed_chars);
 }
 /**
