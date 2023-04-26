@@ -1,7 +1,5 @@
 #include "main.h"
 
-
-
 /**
  * conv_rot13 - rot13 string.
  * @args: va_list containing the string
@@ -30,12 +28,10 @@ int conv_rot13(va_list args, char buff[],
 	VOID(wid);
 	VOID(prsn);
 	VOID(size);
-
 	if (!p)
 	{
 		p = "(null)";
 	}
-
 	if (*p)
 	{
 		for (i = 0; orig[i]; i++)
@@ -48,18 +44,15 @@ int conv_rot13(va_list args, char buff[],
 				break;
 			}
 		}
-
 		if (!orig[i])
 		{
 			x = *p;
 			write(1, &x, 1);
 			counter++;
 		}
-
 		counter += conv_rot13(args, buff, flags, wid, prsn, size);
 	}
-
-	return counter;
+	return (counter);
 }
 /**
  * writ_S - rites a string with hex values

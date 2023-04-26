@@ -13,10 +13,11 @@
  * @buffer: buffer to write the output to
  *
  * Return: the number of characters printed or -1 if an error occurred
- * */
+ */
 
 
-int handle_format_spec(const char *format_spec, int *ind, va_list list, char buffer[],
+int handle_format_spec(const char *format_spec, int *ind,
+		va_list list, char buffer[],
 		int flags, int width, int precision, int size)
 {
 	int i, unknown_len = 0, printed_chars = -1;
@@ -37,7 +38,6 @@ int handle_format_spec(const char *format_spec, int *ind, va_list list, char buf
 		{'R', conv_rot13},
 		{'\0', NULL}
 	};
-
 	i = 0;
 	while (conv_spec[i].format_spec != '\0')
 	{
@@ -51,14 +51,10 @@ int handle_format_spec(const char *format_spec, int *ind, va_list list, char buf
 	if (conv_spec[i].format_spec == '\0')
 	{
 		if (format_spec[*ind] == '\0')
-		{
 			return (-1);
-		}
 		unknown_len += write(1, "%%", 1);
 		if (format_spec[*ind - 1] == ' ')
-		{
 			unknown_len += write(1, " ", 1);
-		}
 		else if (width)
 		{
 			(*ind)--;
@@ -79,13 +75,10 @@ int handle_format_spec(const char *format_spec, int *ind, va_list list, char buf
 	return (printed_chars);
 }
 /**
- * print_oct - Prints an unsigned number in octal notation
- * @types: Lista of arguments
+ * print_oct_helper - Prints an unsigned number in octal notation
+ * @num: Lista of arguments
  * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width
- * @precision: Precision specification
- * @size: Size specifier
+ * @i:  Calculates active flags
  * Return: Number of chars printed
  */
 
@@ -93,12 +86,12 @@ int print_oct_helper(unsigned long int num, char buffer[], int i)
 {
 	if (num == 0)
 	{
-		return i;
+		return (i);
 	}
 
 	i = print_oct_helper(num / 8, buffer, i - 1);
 	buffer[i] = (num % 8) + '0';
-	return i;
+	return (i);
 }
 
 /**
