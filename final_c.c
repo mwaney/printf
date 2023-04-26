@@ -1,29 +1,28 @@
 
 #include "main.h"
 
-
-
 /**
  * conv_rev - Prints reverse string.
  * @size: size of buffer (unused)
  * @args: va_list containing the string
  * @buff: Buffer array to handle print
- * @flags: (unused)
- * @wid: (unused)
- * @prsn: (unused)
- * Return: integer
+ * @flags : unused attr
+ * @wid : unused attr
+ * @prsn : (unused)
+ * @size : unused
  * Return: Numbers of chars printed
  */
 int conv_rev(va_list args, char buff[],
-		int flags __attribute__((unused)),
-		int wid __attribute__((unused)),
-		int prsn __attribute__((unused)),
-		int size __attribute__((unused)))
+int flags, int wid, int prsn, int size)
 {
 	int k, count = 0;
 	char *string, c;
 
 	(void)(buff);
+	(void)(flags);
+	(void)(wid);
+	(void)(prsn);
+	(void)(size);
 	string = va_arg(args, char *);
 
 	if (!string)
@@ -59,7 +58,9 @@ int conv_rev(va_list args, char buff[],
  * @precisn: Precision specification
  * @size: Size specifier
  * Return: Number of chars printed
- */int print_str(va_list args, char buffer[], int fla, int wid, int precisn, int size)
+ */
+int print_str(va_list args, char buffer[], int fla,
+		 int wid, int precisn, int size)
 {
 	int length = 0, i;
 	char *str;
@@ -98,16 +99,14 @@ int conv_rev(va_list args, char buff[],
 	VOID(wid);
 	VOID(precisn);
 	VOID(size);
-
 	VOID(buffer);
 	VOID(fla);
-
 	return (write(1, str, length));
 }
 
 int handle_write_char(char c, char buffer[],
 		int flags, int width, int precision, int size)
-{ /* char is stored at left and paddind at buffer's right */
+{
 	int i = 0;
 	char padd = ' ';
 
