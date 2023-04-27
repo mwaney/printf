@@ -1,5 +1,3 @@
-
-
 #include "main.h"
 
 /**
@@ -24,7 +22,7 @@ int print_ptr(va_list args, char buffer[],
 	int pref;
 	int len;
 
-	char hard_code_var[] = "0123456789ABCDEF";
+	char hard_code_var[] = "0123456789abcdef";
 
 
 	pref = BUFFER_SIZE - 2;

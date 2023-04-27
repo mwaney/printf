@@ -41,9 +41,9 @@ int _printf(const char *format, ...)
 			output_buf(buffer, &buff_ind);
 			flags = flagged(format, &i);
 			width = wide(format, &i, args);
-			++i;
 			precision = print_precision(format, &i, args);
 			size = sizef(format, &i);
+			i++;
 
 			counter = handle_format_spec(format, &i, args, buffer,
 					flags, width, precision, size);
