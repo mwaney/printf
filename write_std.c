@@ -42,7 +42,7 @@ int writ_hex(va_list args, char hard_code_var[], char char_buff[],
 	unsigned long int num = va_arg(args, unsigned long int);
 	unsigned long int fbNum = num;
 	int i = BUFFER_SIZE - 2;
-:
+
 	num = conv_unsallid(num, buffer_size);
 	VOID(wid);
 	if (num == 0)
